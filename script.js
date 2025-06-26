@@ -1,1 +1,1 @@
-console.log('Murkle script loaded');
+console.log('Murkle fixed script');
