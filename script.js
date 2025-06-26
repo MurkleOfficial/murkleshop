@@ -47,21 +47,3 @@ function checkout() {
     alert("Ошибка при отправке");
   });
 }
-
-const topSel = document.getElementById("top");
-const bottomSel = document.getElementById("bottom");
-const accSel = document.getElementById("acc");
-const result = document.getElementById("result");
-
-function updateFit() {
-  const top = topSel.value;
-  const bottom = bottomSel.value;
-  const acc = accSel.value;
-  if (!top || !bottom || !acc) {
-    result.innerHTML = '';
-    return;
-  }
-  result.innerHTML = `🧩 Murkle Fit: ${top} + ${bottom} + ${acc}`;
-}
-
-[topSel, bottomSel, accSel].forEach(el => el.addEventListener('change', updateFit));
