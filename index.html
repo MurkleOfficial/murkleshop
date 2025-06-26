@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,7 +13,6 @@
     <p>*fucking great clothes for fucking great people</p>
     <nav>
       <a href="#products">Собери стиль</a>
-      <a href="#gallery">Лукбук</a>
       <a href="#fit">Образ</a>
       <a href="#philosophy">Философия</a>
       <a href="#reviews">Отзывы</a>
@@ -22,20 +22,14 @@
 
   <main>
     <section class="products" id="products">
-      <div class="product"><img src="images/ERD.jpg" alt="ERD Hoodie"><h3>ERD Washed Hoodie</h3><p>3990₽</p><button onclick="addToCart('ERD Washed Hoodie', 3990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/acne_long.jpg" alt="Acne Longsleeve"><h3>Acne Longsleeve</h3><p>2490₽</p><button onclick="addToCart('Acne Longsleeve', 2490)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/essentials_shorts_white.jpg" alt="Essentials Shorts"><h3>Essentials Shorts</h3><p>1490₽</p><button onclick="addToCart('Essentials Shorts', 1490)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/Acne_Jeans.jpg" alt="Acne Jeans"><h3>Acne Studios Jeans</h3><p>3990₽</p><button onclick="addToCart('Acne Jeans', 3990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/valentino_belt.jpg" alt="Valentino Belt"><h3>Valentino ремень</h3><p>990₽</p><button onclick="addToCart('Valentino ремень', 990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/burberry_belt.jpg" alt="Burberry Belt"><h3>Burberry ремень</h3><p>990₽</p><button onclick="addToCart('Burberry ремень', 990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/balenciaga_belt.jpg" alt="Balenciaga Belt"><h3>Balenciaga ремень</h3><p>890₽</p><button onclick="addToCart('Balenciaga ремень', 890)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/chrome_hearts_glasses.jpg" alt="Chrome Hearts Glasses"><h3>Chrome Hearts Очки</h3><p>990₽</p><button onclick="addToCart('Chrome Hearts Очки', 990)">Добавить в корзину</button></div>
-    </section>
-
-    <section class="gallery" id="gallery">
-      <h2>Лукбук</h2>
-      <img src="images/ERD.jpg" alt="Look 1" />
-      <img src="images/essentials_shorts_white.jpg" alt="Look 2" />
+      <div class="product"><img src="images/ERD.jpg"><h3>ERD Washed Hoodie</h3><p>3990₽</p><button data-name="ERD Washed Hoodie" data-price="3990">Добавить в корзину</button></div>
+      <div class="product"><img src="images/acne_long.jpg"><h3>Acne Longsleeve</h3><p>2490₽</p><button data-name="Acne Longsleeve" data-price="2490">Добавить в корзину</button></div>
+      <div class="product"><img src="images/essentials_shorts_white.jpg"><h3>Essentials Shorts</h3><p>1490₽</p><button data-name="Essentials Shorts" data-price="1490">Добавить в корзину</button></div>
+      <div class="product"><img src="images/Acne_Jeans.jpg"><h3>Acne Studios Jeans</h3><p>3990₽</p><button data-name="Acne Jeans" data-price="3990">Добавить в корзину</button></div>
+      <div class="product"><img src="images/valentino_belt.jpg"><h3>Valentino ремень</h3><p>990₽</p><button data-name="Valentino ремень" data-price="990">Добавить в корзину</button></div>
+      <div class="product"><img src="images/burberry_belt.jpg"><h3>Burberry ремень</h3><p>990₽</p><button data-name="Burberry ремень" data-price="990">Добавить в корзину</button></div>
+      <div class="product"><img src="images/balenciaga_belt.jpg"><h3>Balenciaga ремень</h3><p>890₽</p><button data-name="Balenciaga ремень" data-price="890">Добавить в корзину</button></div>
+      <div class="product"><img src="images/chrome_hearts_glasses.jpg"><h3>Chrome Hearts Очки</h3><p>990₽</p><button data-name="Chrome Hearts Очки" data-price="990">Добавить в корзину</button></div>
     </section>
 
     <section class="fit-builder" id="fit">
@@ -87,21 +81,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    const top = document.getElementById("top");
-    const bottom = document.getElementById("bottom");
-    const acc = document.getElementById("acc");
-    const result = document.getElementById("result");
-    function updateFit() {
-      if (top.value.includes("—") || bottom.value.includes("—") || acc.value.includes("—")) {
-        result.innerHTML = "";
-        return;
-      }
-      result.innerHTML = `🧩 Murkle Fit: ${top.value} + ${bottom.value} + ${acc.value}`;
-    }
-    top.addEventListener("change", updateFit);
-    bottom.addEventListener("change", updateFit);
-    acc.addEventListener("change", updateFit);
-  </script>
 </body>
 </html>

@@ -44,6 +44,6 @@ function checkout() {
     cart = [];
     updateCart();
   }).catch(() => {
-    alert("Ошибка при отправке");
+    alert("Ошибка при отправке заказа");
   });
 }
