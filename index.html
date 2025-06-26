@@ -1,1 +1,74 @@
-<!DOCTYPE html><html><head><title>Murkle</title><link rel='stylesheet' href='style.css'></head><body><script src='script.js'></script></body></html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murkle Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>MURKLE</h1>
+    <p>*fucking great clothes for fucking great people</p>
+    <nav>
+      <a href="#products">Товары</a>
+      <a href="#fit">Образ</a>
+      <a href="#philosophy">Философия</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="products" id="products">
+      <div class="product"><img src="images/ERD.jpg" alt="ERD Hoodie"><h3>ERD Washed Hoodie</h3><p>3990₽</p><button data-name="ERD Washed Hoodie" data-price="3990">Добавить в корзину</button></div>
+      <div class="product"><img src="images/acne_long.jpg" alt="Acne Longsleeve"><h3>Acne Longsleeve</h3><p>2490₽</p><button data-name="Acne Longsleeve" data-price="2490">Добавить в корзину</button></div>
+      <div class="product"><img src="images/essentials_shorts_white.jpg" alt="Essentials Shorts"><h3>Essentials Shorts</h3><p>1490₽</p><button data-name="Essentials Shorts" data-price="1490">Добавить в корзину</button></div>
+    </section>
+
+    <section class="fit-builder" id="fit">
+      <h2>Собери свой образ</h2>
+      <form id="fit-form">
+        <select id="top">
+          <option value="">— Верх —</option>
+          <option value="Acne Longsleeve">Acne Longsleeve</option>
+          <option value="ERD Hoodie">ERD Hoodie</option>
+        </select>
+        <select id="bottom">
+          <option value="">— Низ —</option>
+          <option value="Essentials Shorts">Essentials Shorts</option>
+        </select>
+        <select id="acc">
+          <option value="">— Аксессуар —</option>
+          <option value="CH Glasses">CH Glasses</option>
+        </select>
+      </form>
+      <div id="result"></div>
+    </section>
+
+    <section id="philosophy">
+      <h2>Философия</h2>
+      <p>Мы не гонимся за трендами — мы их переживаем.</p>
+    </section>
+
+    <section id="reviews">
+      <h2>Отзывы</h2>
+      <p class="quote">“Заказал — не пожалел. Всё сел идеально.”</p>
+    </section>
+  </main>
+
+  <aside class="cart">
+    <h2>Корзина</h2>
+    <ul id="cart-list"></ul>
+    <p id="total">Итого: 0₽</p>
+    <button onclick="checkout()">Оформить</button>
+  </aside>
+
+  <footer id="contacts">
+    <p>Связь: <a href="https://t.me/AssortiMurkle">@AssortiMurkle</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
