@@ -4,145 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Murkle Shop</title>
-  <style>
-    :root {
-      --bg: #0f0f0f;
-      --text: #fff;
-      --accent: #888;
-      --card-bg: #1a1a1a;
-    }
-    body {
-      margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      animation: fadeInBody 1s ease-in;
-    }
-    @keyframes fadeInBody {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    header {
-      background-color: #000;
-      padding: 20px;
-      text-align: center;
-      animation: fadeDown 0.8s ease-in;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    nav {
-      text-align: center;
-      margin-top: 10px;
-    }
-    nav a {
-      color: var(--accent);
-      margin: 0 10px;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-    .collection, .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-    .item {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 12px;
-      flex: 1 1 260px;
-      max-width: 300px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-    }
-    .item a {
-      color: var(--bg);
-      background: var(--text);
-      padding: 6px 12px;
-      text-decoration: none;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 10px;
-    }
-    .gallery img {
-      max-height: 320px;
-      border-radius: 12px;
-      transition: transform 0.4s ease;
-    }
-    .gallery img:hover {
-      transform: scale(1.05);
-    }
-    .fit-builder select {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-    }
-    .fit-result {
-      color: var(--accent);
-      margin-top: 15px;
-    }
-    .quote {
-      font-style: italic;
-      color: var(--accent);
-      margin: 10px 0;
-    }
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--accent);
-      font-size: 14px;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.03), transparent 40%),
-                  radial-gradient(circle at 80% 70%, rgba(255,255,255,0.02), transparent 50%);
-      z-index: 0;
-      pointer-events: none;
-    }
-    @media (max-width: 600px) {
-      nav a { display: block; margin: 8px 0; }
-      .gallery img { max-width: 90vw; height: auto; }
-    }
-  </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add("visible");
-        });
-      }, { threshold: 0.1 });
-      document.querySelectorAll(".item, .fade-section").forEach(el => observer.observe(el));
-    });
-  </script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>MURKLE</h1>
-    <div>*fucking great clothes for fucking great people</div>
+    <p>*fucking great clothes for fucking great people</p>
     <nav>
-      <a href="#collection">Собери стиль</a>
+      <a href="#products">Собери стиль</a>
       <a href="#gallery">Лукбук</a>
       <a href="#fit">Образ</a>
       <a href="#philosophy">Философия</a>
@@ -151,58 +20,65 @@
     </nav>
   </header>
 
-  <section class="fade-section" id="collection">
-    <h2>Собери стиль</h2>
-    <div class="collection">
-      <div class="item">AC 1996 Longsleeve<br/><a href="https://t.me/AssortiMurkle">Заказать</a></div>
-      <div class="item">Chrome Hearts Glasses<br/><a href="https://t.me/AssortiMurkle">Заказать</a></div>
-      <div class="item">Essentials Shorts<br/><a href="https://t.me/AssortiMurkle">Заказать</a></div>
-      <div class="item">ERD Washed Hoodie<br/><a href="https://t.me/AssortiMurkle">Заказать</a></div>
-    </div>
-  </section>
+  <main>
+    <section class="products" id="products">
+      <div class="product"><img src="images/ERD.jpg" alt="ERD Hoodie"><h3>ERD Washed Hoodie</h3><p>3990₽</p><button onclick="addToCart('ERD Washed Hoodie', 3990)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/acne_long.jpg" alt="Acne Longsleeve"><h3>Acne Longsleeve</h3><p>2490₽</p><button onclick="addToCart('Acne Longsleeve', 2490)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/essentials_shorts_white.jpg" alt="Essentials Shorts"><h3>Essentials Shorts</h3><p>1490₽</p><button onclick="addToCart('Essentials Shorts', 1490)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/Acne_Jeans.jpg" alt="Acne Jeans"><h3>Acne Studios Jeans</h3><p>3990₽</p><button onclick="addToCart('Acne Jeans', 3990)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/valentino_belt.jpg" alt="Valentino Belt"><h3>Valentino ремень</h3><p>990₽</p><button onclick="addToCart('Valentino ремень', 990)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/burberry_belt.jpg" alt="Burberry Belt"><h3>Burberry ремень</h3><p>990₽</p><button onclick="addToCart('Burberry ремень', 990)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/balenciaga_belt.jpg" alt="Balenciaga Belt"><h3>Balenciaga ремень</h3><p>890₽</p><button onclick="addToCart('Balenciaga ремень', 890)">Добавить в корзину</button></div>
+      <div class="product"><img src="images/chrome_hearts_glasses.jpg" alt="Chrome Hearts Glasses"><h3>Chrome Hearts Очки</h3><p>990₽</p><button onclick="addToCart('Chrome Hearts Очки', 990)">Добавить в корзину</button></div>
+    </section>
 
-  <section class="fade-section" id="gallery">
-    <h2>Лукбук</h2>
-    <div class="gallery">
-      <img src="https://via.placeholder.com/300x400" alt="Look 1" />
-      <img src="https://via.placeholder.com/300x400" alt="Look 2" />
-      <img src="https://via.placeholder.com/300x400" alt="Look 3" />
-    </div>
-  </section>
+    <section class="gallery" id="gallery">
+      <h2>Лукбук</h2>
+      <img src="images/ERD.jpg" alt="Look 1" />
+      <img src="images/essentials_shorts_white.jpg" alt="Look 2" />
+    </section>
 
-  <section class="fade-section" id="fit">
-    <h2>Собери свой образ</h2>
-    <select id="top">
-      <option>— Верх —</option>
-      <option>AC Longsleeve</option>
-      <option>ERD Hoodie</option>
-    </select>
-    <select id="bottom">
-      <option>— Низ —</option>
-      <option>Essentials Shorts</option>
-      <option>Acne Denim</option>
-    </select>
-    <select id="acc">
-      <option>— Аксессуары —</option>
-      <option>CH Glasses</option>
-      <option>Valentino Belt</option>
-    </select>
-    <div class="fit-result" id="result"></div>
-  </section>
+    <section class="fit-builder" id="fit">
+      <h2>Собери свой образ</h2>
+      <select id="top">
+        <option>— Верх —</option>
+        <option>Acne Longsleeve</option>
+        <option>ERD Hoodie</option>
+      </select>
+      <select id="bottom">
+        <option>— Низ —</option>
+        <option>Essentials Shorts</option>
+        <option>Acne Jeans</option>
+      </select>
+      <select id="acc">
+        <option>— Аксессуары —</option>
+        <option>CH Glasses</option>
+        <option>Valentino Belt</option>
+      </select>
+      <div class="fit-result" id="result"></div>
+    </section>
 
-  <section class="fade-section" id="philosophy">
-    <h2>Философия Murkle</h2>
-    <p>Мы не гонимся за трендами — мы их переживаем.</p>
-    <p>Каждая вещь — часть видения. Стиль — это не крик, а уверенность.</p>
-    <p>Ты не выделяешься. Ты проявляешься.</p>
-  </section>
+    <section class="fade-section" id="philosophy">
+      <h2>Философия Murkle</h2>
+      <p>Мы не гонимся за трендами — мы их переживаем.</p>
+      <p>Каждая вещь — часть видения. Стиль — это не крик, а уверенность.</p>
+      <p>Ты не выделяешься. Ты проявляешься.</p>
+    </section>
 
-  <section class="fade-section" id="reviews">
-    <h2>Отзывы</h2>
-    <p class="quote">“Заказал — не пожалел. Всё сел идеально.”</p>
-    <p class="quote">“Всё как в лукбуке. Спасибо за вкус.”</p>
-    <p class="quote">“Теперь понятно, зачем нужен стиль.”</p>
-  </section>
+    <section class="fade-section" id="reviews">
+      <h2>Отзывы</h2>
+      <p class="quote">“Заказал — не пожалел. Всё сел идеально.”</p>
+      <p class="quote">“Всё как в лукбуке. Спасибо за вкус.”</p>
+      <p class="quote">“Теперь понятно, зачем нужен стиль.”</p>
+    </section>
+  </main>
+
+  <aside class="cart">
+    <h2>Корзина</h2>
+    <ul id="cart-list"></ul>
+    <p id="total">Итого: 0₽</p>
+    <button onclick="checkout()">Оформить</button>
+  </aside>
 
   <footer id="contacts">
     <p>Murkle Shop — с 2024 с уважением к стилю</p>
@@ -210,6 +86,7 @@
     <p>Email: murkle@murkle.shop</p>
   </footer>
 
+  <script src="script.js"></script>
   <script>
     const top = document.getElementById("top");
     const bottom = document.getElementById("bottom");
