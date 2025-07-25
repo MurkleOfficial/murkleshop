@@ -65,3 +65,21 @@ function checkout() {
     }
   });
 }
+function nextSlide(button) {
+  const slider = button.closest('.slider');
+  const slides = slider.querySelectorAll('.slide');
+  let index = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
+  slides[index].classList.remove('active');
+  index = (index + 1) % slides.length;
+  slides[index].classList.add('active');
+}
+
+function prevSlide(button) {
+  const slider = button.closest('.slider');
+  const slides = slider.querySelectorAll('.slide');
+  let index = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
+  slides[index].classList.remove('active');
+  index = (index - 1 + slides.length) % slides.length;
+  slides[index].classList.add('active');
+}
+

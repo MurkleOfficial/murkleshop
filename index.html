@@ -6,6 +6,31 @@
   <title>Murkle Shop</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
+  <style>
+    .product h3 {
+      font-size: 1.1em;
+      margin: 10px 0 6px;
+      color: #fff;
+      height: 40px;
+      overflow: hidden;
+    }
+
+    .product button {
+      margin-top: auto;
+    }
+
+    .overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .logo {
+      text-align: center;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -14,7 +39,6 @@
         <h1 class="logo">MurkleShop</h1>
         <p class="sub">MURKLE</p>
         <p class="slogan">fucking great clothes for fucking great people</p>
-
         <div class="features">
           <div>
             <img src="images/tshirt.png" alt="SWAG" />
@@ -29,23 +53,13 @@
             <p>Бийск</p>
           </div>
         </div>
-
         <a href="#products" class="hero-btn">Заказать</a>
       </div>
     </section>
   </header>
 
   <main>
-    <section class="products" id="products">
-      <div class="product"><img src="images/ERD.jpg" alt="ERD Hoodie"><h3>ERD Washed Hoodie</h3><p>3990₽</p><button onclick="addToCart('ERD Washed Hoodie', 3990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/acne_long.jpg" alt="Acne Longsleeve"><h3>Acne Longsleeve</h3><p>2490₽</p><button onclick="addToCart('Acne Longsleeve', 2490)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/essentials_shorts_white.jpg" alt="Essentials Shorts"><h3>Essentials Shorts</h3><p>1490₽</p><button onclick="addToCart('Essentials Shorts', 1490)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/Acne_Jeans.jpg" alt="Acne Jeans"><h3>Acne Studios Jeans</h3><p>3990₽</p><button onclick="addToCart('Acne Jeans', 3990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/valentino_belt.jpg" alt="Valentino Belt"><h3>Valentino ремень</h3><p>990₽</p><button onclick="addToCart('Valentino ремень', 990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/burberry_belt.jpg" alt="Burberry Belt"><h3>Burberry ремень</h3><p>990₽</p><button onclick="addToCart('Burberry ремень', 990)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/balenciaga_belt.jpg" alt="Balenciaga Belt"><h3>Balenciaga ремень</h3><p>890₽</p><button onclick="addToCart('Balenciaga ремень', 890)">Добавить в корзину</button></div>
-      <div class="product"><img src="images/chrome_hearts_glasses.jpg" alt="Chrome Hearts Glasses"><h3>Chrome Hearts Очки</h3><p>990₽</p><button onclick="addToCart('Chrome Hearts Очки', 990)">Добавить в корзину</button></div>
-    </section>
+    <section class="products" id="products"></section>
   </main>
 
   <aside class="cart">
@@ -56,9 +70,81 @@
   </aside>
 
   <footer id="contacts">
-    <p>Murkle Shop — с 2024 с уважением к стилю</p>
-    <p>Telegram: <a href="https://t.me/AssortiMurkle" style="color: #888">@AssortiMurkle</a></p>
-    <p>Email: murkle@murkle.shop</p>
+    <p>Murkle Shop — с 2025 с уважением к стилю</p>
+    <p>Telegram: <a href="https://t.me/MurkleShop" style="color: #888">@MurkleShop</a></p>
+    <p>Email: morskojucrop@gmail.com</p>
   </footer>
+
+  <script>
+    const products = [
+      { name: "Enfants Riches Deprimes Hoodie", price: 3990, stock: 3 },
+      { name: "Acne Longsleeve", price: 2490, stock: 2 },
+      { name: "Essentials Shorts", price: 1490, stock: 0 },
+      { name: "Acne Jeans", price: 3990, stock: 1 },
+      { name: "Valentino ремень", price: 990, stock: 4 },
+      { name: "Burberry ремень", price: 990, stock: 2 },
+      { name: "Balenciaga ремень", price: 890, stock: 1 },
+      { name: "Chrome Hearts Очки", price: 990, stock: 0 },
+    ];
+
+    const productSection = document.getElementById("products");
+    const cartList = document.getElementById("cart-list");
+    const totalElement = document.getElementById("total");
+    let cart = [];
+
+function renderProducts() {
+  productSection.innerHTML = "";
+  products.forEach((p) => {
+    const front = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-front.jpg";
+    const back = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-back.jpg";
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <div class="product-img">
+        <img src="images/${front}" alt="${p.name} front" class="img-front" />
+        <img src="images/${back}" alt="${p.name} back" class="img-back" />
+      </div>
+      <h3>${p.name}</h3>
+      <p>${p.price}₽</p>
+      <p class="stock">${p.stock > 0 ? `В наличии: ${p.stock} шт.` : "Нет в наличии"}</p>
+      ${p.stock > 0
+        ? `<button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`
+        : `<button onclick="addToWaitlist('${p.name}')" class="wait-btn">Жду</button>`}
+    `;
+    productSection.appendChild(div);
+  });
+}
+
+    function addToCart(name, price) {
+      const product = products.find((p) => p.name === name);
+      if (product && product.stock > 0) {
+        cart.push({ name, price });
+        product.stock--;
+        updateCart();
+        productSection.innerHTML = "";
+        renderProducts();
+      }
+    }
+
+    function updateCart() {
+      cartList.innerHTML = "";
+      let total = 0;
+      cart.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} — ${item.price}₽`;
+        cartList.appendChild(li);
+        total += item.price;
+      });
+      totalElement.textContent = `Итого: ${total}₽`;
+    }
+
+    function checkout() {
+      alert("Переход к оформлению заказа...");
+    }
+
+    renderProducts();
+  </script>
 </body>
 </html>
+
+
