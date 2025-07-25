@@ -92,28 +92,28 @@
     const totalElement = document.getElementById("total");
     let cart = [];
 
-function renderProducts() {
-  productSection.innerHTML = "";
-  products.forEach((p) => {
-    const front = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-front.jpg";
-    const back = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-back.jpg";
-    const div = document.createElement("div");
-    div.className = "product";
-    div.innerHTML = `
-      <div class="product-img">
-        <img src="images/${front}" alt="${p.name} front" class="img-front" />
-        <img src="images/${back}" alt="${p.name} back" class="img-back" />
-      </div>
-      <h3>${p.name}</h3>
-      <p>${p.price}₽</p>
-      <p class="stock">${p.stock > 0 ? `В наличии: ${p.stock} шт.` : "Нет в наличии"}</p>
-      ${p.stock > 0
-        ? `<button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`
-        : `<button onclick="addToWaitlist('${p.name}')" class="wait-btn">Жду</button>`}
-    `;
-    productSection.appendChild(div);
-  });
-}
+    function renderProducts() {
+      productSection.innerHTML = "";
+      products.forEach((p) => {
+        const front = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-front.jpg";
+        const back = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-back.jpg";
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <div class="product-img">
+            <img src="images/${front}" alt="${p.name} front" class="img-front" />
+            <img src="images/${back}" alt="${p.name} back" class="img-back" />
+          </div>
+          <h3>${p.name}</h3>
+          <p>${p.price}₽</p>
+          <p class="stock">${p.stock > 0 ? `В наличии: ${p.stock} шт.` : "Нет в наличии"}</p>
+          ${p.stock > 0
+            ? `<button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`
+            : `<button onclick="addToWaitlist('${p.name}'); this.disabled=true; this.textContent='В листе ожидания';">Жду</button>`}
+        `;
+        productSection.appendChild(div);
+      });
+    }
 
     function addToCart(name, price) {
       const product = products.find((p) => p.name === name);
@@ -121,7 +121,6 @@ function renderProducts() {
         cart.push({ name, price });
         product.stock--;
         updateCart();
-        productSection.innerHTML = "";
         renderProducts();
       }
     }
@@ -129,9 +128,16 @@ function renderProducts() {
     function updateCart() {
       cartList.innerHTML = "";
       let total = 0;
-      cart.forEach((item) => {
+      cart.forEach((item, index) => {
         const li = document.createElement("li");
         li.textContent = `${item.name} — ${item.price}₽`;
+        const del = document.createElement("button");
+        del.textContent = "✕";
+        del.onclick = () => {
+          cart.splice(index, 1);
+          updateCart();
+        };
+        li.appendChild(del);
         cartList.appendChild(li);
         total += item.price;
       });
@@ -139,7 +145,64 @@ function renderProducts() {
     }
 
     function checkout() {
-      alert("Переход к оформлению заказа...");
+      if (cart.length === 0) {
+        alert("Корзина пуста.");
+        return;
+      }
+
+      const username = prompt("Введите свой Telegram юзернейм:");
+      if (!username) return;
+
+      let message = `🛍 Новый заказ от @${username}\n\n`;
+      cart.forEach(item => {
+        message += `• ${item.name} — ${item.price}₽\n`;
+      });
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      message += `\nИтого: ${total}₽`;
+
+      fetch(`https://api.telegram.org/bot7570989620:AAHU8nKxVo9g23_A5s4j4TwcF-02tBgqwiY/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: 8166788823,
+          text: message
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Заказ отправлен! Мы скоро свяжемся с вами.");
+          cart = [];
+          updateCart();
+        } else {
+          alert("Ошибка при отправке заказа. Попробуйте позже.");
+        }
+      });
+    }
+
+    function addToWaitlist(name) {
+      const username = prompt("Введите свой Telegram юзернейм для уведомления:");
+      if (!username) return;
+
+      const message = `📥 Лист ожидания:\n@${username} ждёт товар: ${name}`;
+
+      fetch(`https://api.telegram.org/bot7570989620:AAHU8nKxVo9g23_A5s4j4TwcF-02tBgqwiY/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: 8166788823,
+          text: message
+        })
+      }).then(response => {
+        if (!response.ok) {
+          alert("Ошибка при добавлении в лист ожидания. Попробуйте позже.");
+        } else {
+          alert("Добавлен в лист ожидания. Сообщим, как только появится!");
+        }
+      });
     }
 
     renderProducts();
