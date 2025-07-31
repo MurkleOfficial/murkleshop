@@ -7,28 +7,42 @@
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
   <style>
-    .product h3 {
-      font-size: 1.1em;
-      margin: 10px 0 6px;
-      color: #fff;
-      height: 40px;
-      overflow: hidden;
-    }
-
-    .product button {
-      margin-top: auto;
-    }
-
     .overlay {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
     }
-
     .logo {
       text-align: center;
       width: 100%;
+    }
+    .cart {
+      z-index: 9999;
+    }
+    .single .img-front {
+      opacity: 1 !important;
+    }
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .categories button {
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .categories button:hover,
+    .categories button.active {
+      background: #edebc0;
+      color: black;
     }
   </style>
 </head>
@@ -59,6 +73,18 @@
   </header>
 
   <main>
+    <div class="categories">
+      <button class="active" onclick="filterProducts('all')">Все</button>
+      <button onclick="filterProducts('tshirt')">Футболки</button>
+      <button onclick="filterProducts('hoodie')">Худи</button>
+      <button onclick="filterProducts('jeans')">Джинсы</button>
+      <button onclick="filterProducts('shorts')">Шорты</button>
+      <button onclick="filterProducts('belt')">Ремни</button>
+      <button onclick="filterProducts('shoes')">Обувь</button>
+      <button onclick="filterProducts('sweater')">Свитера</button>
+      <button onclick="filterProducts('accessory')">Аксессуары</button>
+    </div>
+
     <section class="products" id="products"></section>
   </main>
 
@@ -76,53 +102,106 @@
   </footer>
 
   <script>
-    const products = [
-      { name: "Enfants Riches Deprimes Hoodie", price: 3990, stock: 3 },
-      { name: "Acne Longsleeve", price: 2490, stock: 2 },
-      { name: "Essentials Shorts", price: 1490, stock: 0 },
-      { name: "Acne Jeans", price: 3990, stock: 1 },
-      { name: "Valentino ремень", price: 990, stock: 4 },
-      { name: "Burberry ремень", price: 990, stock: 2 },
-      { name: "Balenciaga ремень", price: 890, stock: 1 },
-      { name: "Chrome Hearts Очки", price: 990, stock: 0 },
-    ];
+const products = [
+  // ✅ Обычные товары с наличием
+  { name: "Enfants Riches Deprimes Hoodie", price: 3990, stock: 1, preorder: false, category: "hoodie" },
+  { name: "Acne Longsleeve", price: 2490, stock: 1, preorder: false, category: "tshirt" },
+  { name: "Essentials Shorts", price: 1490, stock: 1, preorder: false, category: "shorts" },
+  { name: "Acne Jeans", price: 3990, stock: 1, preorder: false, category: "jeans" },
+  { name: "Valentino ремень", price: 990, stock: 0, preorder: false, category: "belt" },
+  { name: "Burberry ремень", price: 990, stock: 1, preorder: false, category: "belt" },
+  { name: "Balenciaga ремень", price: 890, stock: 1, preorder: false, category: "belt" },
+  { name: "Chrome Hearts Очки", price: 990, stock: 0, preorder: false, category: "accessory" },
+
+  // ✅ Все остальные только предзаказ
+  { name: "Maison Margiela Sweater", price: 1890, stock: 0, preorder: true, category: "sweater" },
+  { name: "Valentino Shoes", price: 4990, stock: 0, preorder: true, category: "shoes" },
+  { name: "Number (N)ine T-shirt", price: 1490, stock: 0, preorder: true, category: "tshirt" },
+  { name: "ERD ZIP", price: 1990, stock: 0, preorder: true, category: "hoodie" },
+  { name: "Supreme T-shirt", price: 1990, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Crocs slippers", price: 590, stock: 0, preorder: true, category: "shoes" },
+  { name: "Acne Studios T-shirt", price: 1490, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Louboutin Shoes", price: 4490, stock: 0, preorder: true, category: "shoes" },
+  { name: "ERD T-shirt", price: 990, stock: 0, preorder: true, category: "tshirt" },
+  { name: "ERD Hoodie (Black)", price: 2890, stock: 0, preorder: true, category: "hoodie" },
+  { name: "Maison Margiela T-shirt", price: 990, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Saint Laurent Sweater", price: 2990, stock: 0, preorder: true, category: "sweater" },
+  { name: "ERD T-shirt", price: 990, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Chrome Hearts tank top", price: 1490, stock: 0, preorder: true, category: "tshirt" },
+  { name: "21SAVAGE tank top", price: 1490, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Balenciaga Shoes", price: 6990, stock: 0, preorder: true, category: "shoes" },
+  { name: "Christian Dior Bags", price: 1990, stock: 0, preorder: true, category: "accessory" },
+  { name: "Ferrogamo Belt", price: 690, stock: 0, preorder: true, category: "belt" },
+  { name: "Acne Studios Belt", price: 590, stock: 0, preorder: true, category: "belt" },
+  { name: "ERD Sweater", price: 1490, stock: 0, preorder: true, category: "sweater" },
+  { name: "ERD Belt", price: 990, stock: 0, preorder: true, category: "belt" },
+  { name: "Maison Margiela Cap", price: 890, stock: 0, preorder: true, category: "accessory" },
+  { name: "Alyx Bracelet", price: 490, stock: 0, preorder: true, category: "accessory" },
+  { name: "Marcelo Burlon T-shirt", price: 990, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Vetements T-shirt", price: 1190, stock: 0, preorder: true, category: "tshirt" },
+  { name: "Maison Margiela Sweater", price: 2990, stock: 0, preorder: true, category: "sweater" },
+  { name: "Maison Margiela Wallet", price: 1490, stock: 0, preorder: true, category: "accessory" },
+  { name: "Pendant", price: 490, stock: 0, preorder: true, category: "accessory" },
+  { name: "Jeans", price: 1490, stock: 0, preorder: true, category: "jeans" }
+];
+
 
     const productSection = document.getElementById("products");
     const cartList = document.getElementById("cart-list");
     const totalElement = document.getElementById("total");
     let cart = [];
+    let currentCategory = 'all';
 
     function renderProducts() {
       productSection.innerHTML = "";
-      products.forEach((p) => {
-        const front = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-front.jpg";
-        const back = p.name.toLowerCase().replaceAll(" ", "_").replaceAll("ё", "e").replaceAll("й", "i") + "-back.jpg";
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <div class="product-img">
-            <img src="images/${front}" alt="${p.name} front" class="img-front" />
-            <img src="images/${back}" alt="${p.name} back" class="img-back" />
-          </div>
-          <h3>${p.name}</h3>
-          <p>${p.price}₽</p>
-          <p class="stock">${p.stock > 0 ? `В наличии: ${p.stock} шт.` : "Нет в наличии"}</p>
-          ${p.stock > 0
-            ? `<button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`
-            : `<button onclick="addToWaitlist('${p.name}'); this.disabled=true; this.textContent='В листе ожидания';">Жду</button>`}
-        `;
-        productSection.appendChild(div);
-      });
+      const nameCounts = {};
+
+      products
+        .filter(p => currentCategory === 'all' || p.category === currentCategory)
+        .forEach(p => {
+          const baseName = p.name;
+          nameCounts[baseName] = (nameCounts[baseName] || 0) + 1;
+          const suffix = nameCounts[baseName] > 1 ? `_${nameCounts[baseName]}` : "";
+
+          const fileBase = baseName.toLowerCase().replaceAll(" ", "_").replaceAll("-", "_").replaceAll("(", "").replaceAll(")", "");
+          const front = `${fileBase}${suffix}-front.jpg`;
+          const back = `${fileBase}${suffix}-back.jpg`;
+
+          const div = document.createElement("div");
+          div.className = "product";
+
+          div.innerHTML = `
+            <div class="product-img" id="img-${fileBase}${suffix}">
+              <img src="images/${front}" alt="${p.name} front" class="img-front" />
+              <img src="images/${back}" alt="${p.name} back" class="img-back" onerror="this.parentNode.classList.add('single'); this.remove();" />
+            </div>
+            <h3>${p.name}</h3>
+            <p>${p.price}₽</p>
+            <p class="stock">
+              ${p.stock > 0 ? `В наличии: ${p.stock} шт.` : p.preorder ? "Уже в пути!" : "Нет в наличии"}
+            </p>
+            ${
+              p.stock > 0
+                ? `<button onclick="addToCart('${p.name}', ${p.price})">Добавить в корзину</button>`
+                : p.preorder
+                  ? `<button onclick="addToCart('${p.name}', ${p.price})">Предзаказ</button>`
+                  : `<button onclick="addToWaitlist('${p.name}'); this.disabled=true; this.textContent='В листе ожидания';">Жду</button>`
+            }
+          `;
+          productSection.appendChild(div);
+        });
+    }
+
+    function filterProducts(category) {
+      currentCategory = category;
+      document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.categories button[onclick="filterProducts('${category}')"]`).classList.add('active');
+      renderProducts();
     }
 
     function addToCart(name, price) {
-      const product = products.find((p) => p.name === name);
-      if (product && product.stock > 0) {
-        cart.push({ name, price });
-        product.stock--;
-        updateCart();
-        renderProducts();
-      }
+      cart.push({ name, price });
+      updateCart();
     }
 
     function updateCart() {
@@ -162,13 +241,8 @@
 
       fetch(`https://api.telegram.org/bot7570989620:AAHU8nKxVo9g23_A5s4j4TwcF-02tBgqwiY/sendMessage`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: 8166788823,
-          text: message
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: 8166788823, text: message })
       })
       .then(response => {
         if (response.ok) {
@@ -189,13 +263,8 @@
 
       fetch(`https://api.telegram.org/bot7570989620:AAHU8nKxVo9g23_A5s4j4TwcF-02tBgqwiY/sendMessage`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: 8166788823,
-          text: message
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: 8166788823, text: message })
       }).then(response => {
         if (!response.ok) {
           alert("Ошибка при добавлении в лист ожидания. Попробуйте позже.");
@@ -209,5 +278,7 @@
   </script>
 </body>
 </html>
+
+
 
 

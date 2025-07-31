@@ -238,6 +238,24 @@ footer {
 .hero-btn:hover {
   background: #ffb000;
 }
+.cart {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: #111;
+  padding: 15px;
+  border-radius: 10px;
+  width: 220px;
+  z-index: 9999; /* корзина всегда сверху */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
+.product-img.single img.img-front {
+  opacity: 1 !important;
+}
+.product-img.single img.img-back {
+  display: none; /* если нет back-изображения */
+}
+
 
 
 
